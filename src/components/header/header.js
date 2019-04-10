@@ -10,8 +10,7 @@ const Header = () => (
     <div>
         <nav className="navbar navbar-toggleable navbar-light bg-light">
             <NavLink className="navbar-brand justify-content-start" to="/">Movierama</NavLink>
-            {!USER
-            ?
+            {!USER ?
             <div className="navbar-collapse justify-content-end">
                 <ul className="navbar-nav">
                     <li className="nav-item">
