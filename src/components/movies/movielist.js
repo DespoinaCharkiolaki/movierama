@@ -12,7 +12,7 @@ class MovieList extends React.Component {
     }
 
     componentDidMount(){
-        fetch("http://localhost:3001/movies")
+        fetch("/api/movies")
         .then(res => res.json())
         .then(
             (result) => {

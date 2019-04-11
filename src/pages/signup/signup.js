@@ -14,13 +14,25 @@ class SignUp extends React.Component {
 
     fetch('/api/register', {
       method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
       body: JSON.stringify(
         {
           username: data.get('username'),
           password: data.get('password'),
           role: 'USER'
         }),
-    }).then()
+    }).then(res => res.json())
+      .then((j) => {
+          console.log(j)
+        },
+        (error) => {
+          this.setState({
+            hasError: true,
+            error
+          });
+        })
       .catch();
   }
 

@@ -11,11 +11,10 @@ class LogIn extends React.Component {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch('http://localhost:8090/api/login', {
+    fetch('/api/login', {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json',
-        'Origin': 'http://localhost:8090'
       }),
       body: JSON.stringify(
         {
@@ -28,7 +27,7 @@ class LogIn extends React.Component {
         },
         (error) => {
           this.setState({
-            isLoaded: true,
+            hasError: true,
             error
           });
         })
@@ -36,13 +35,6 @@ class LogIn extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, movies } = this.state;
-
-      {error &&
-        <div className="alert alert-danger mt-4" role="alert">
-          Error: {error.message}
-        </div>
-      }
     return (
       <div className="row  justify-content-center">
         <div className="col-4 log-in">
