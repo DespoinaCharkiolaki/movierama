@@ -1,26 +1,43 @@
 import React from 'react';
+import { addMovieApi } from '../../constants';
 
 class NewMovie extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            error: null,
+            isLoaded: false
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.target);
-
-        fetch('http://localhost:8090/api/movies', {
+        
+        fetch(addMovieApi, {
             method: 'POST',
             body: JSON.stringify(
               {
                   title: data.get('title'),
                   description: data.get('description')
               }),
-        }).then()
-          .catch();
-    }
+        })
+        .then(
+            (result) => {
+                this.setState({
+                  isLoaded: true
+                });
+            },
+           (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+            }
+          )
+        }
 
     render() {
         return (

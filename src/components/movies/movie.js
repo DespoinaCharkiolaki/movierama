@@ -6,20 +6,23 @@ import 'moment-timezone';
 
 class Movie extends React.Component {
     render() {
+        const movie = this.props.movie
         return (
             <div className="movie">
-                <h1 className="h3 mb-3 font-weight-normal">{this.props.movie.title}</h1>
+                <h1 className="h3 mb-3 font-weight-normal">
+                    {movie.title}
+                </h1>
                 <h6>Posted by 
-                    {USER.username ===  this.props.movie.username
+                    {USER.username ===  movie.username
                     ?
                     <a href="#"> You </a> 
                     :
-                    <a href="#"> {this.props.movie.username} </a> 
+                    <a href="#"> {movie.username} </a> 
                     }
-                    <span> <Moment fromNow>{this.props.movie.date}</Moment></span>
+                    <Moment fromNow>{movie.date}</Moment>
                 </h6>
-                <p>{this.props.movie.description}</p>
-                <Vote movie={this.props.movie} />
+                <p>{movie.description}</p>
+                <Vote movie={movie} />
             </div> 
         );
     }
