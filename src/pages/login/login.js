@@ -3,7 +3,7 @@ import UserForm from '../../components/userForm'
 import {loginApi} from '../../api/api';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
-import Alert from '../../components/alert'
+import Alert from '../../components/alert';
 
 class LogIn extends Component {
 
@@ -21,10 +21,16 @@ class LogIn extends Component {
     const data = new FormData(event.target);
 
     axios
-      .post(loginApi, {username: data.get('username'), password: data.get('password')})
+      .post(loginApi, {
+          username: data.get('username'),
+          password: data.get('password')
+      })
       .then(response => {
         this.props.setUser(response.data);
-        this.setState({error: null, loginSuccessful: true});
+        this.setState({
+            error: null,
+            loginSuccessful: true
+        });
         console.log("success", response);
       })
       .catch(error => {

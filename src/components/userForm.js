@@ -1,5 +1,4 @@
 import React from 'react';
-import Alert from "./alert";
 
 class UserForm extends React.Component {
   render() {
@@ -7,7 +6,7 @@ class UserForm extends React.Component {
     const button = this.props.button;
     return (
       <div className="row justify-content-center">
-        <div className="col-4 sign-up">
+        <div className="col-lg-4 col-md-10 sign-up">
           <div className="text-center">
             <form className="form-signin" onSubmit={this.props.action}>
               <h1 className="h3 mb-3 font-weight-normal">{title}</h1>

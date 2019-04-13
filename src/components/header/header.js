@@ -8,12 +8,12 @@ import NewMovie from '../movies/newmovie';
 import { logoutApi } from "../../api/api";
 
 class Header extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       user: null,
-      movies: []
+      movies: [],
+      error: null
     };
   };
 
@@ -37,6 +37,53 @@ class Header extends Component {
         console.log("error", error.response.statusText);
       });
   };
+
+  setVote = (vote, movieId) => {
+      axios
+        .post(`/api/movies/${movieId}/vote`,
+          { voteType: vote },
+          { headers: { 'Authorization': this.state.user.token } }
+        )
+        .then(response => {
+          if (vote === 'UPVOTE'){
+          this.setState(prevState => ({
+             user: {...prevState.user.likes, movieId}
+           }));
+           }else {
+            this.setState(prevState => ({
+               user: {...prevState.user.dislikes, movieId}
+             }));
+           }
+          console.log(response);
+        })
+        .catch(error => {
+          const errorText = error.response.statusText;
+          this.setState({ error: errorText });
+          console.log(errorText);
+        })
+    };
+
+      revoke = (movieId) => {
+        axios
+          .post(`/api/movies/${movieId}/revoke`,
+            {},
+            { headers: { 'Authorization': this.state.user.token } }
+          )
+          .then(response => {
+                this.setState(prevState => ({
+                  user: {...prevState.user.likes.filter(like => like !== movieId)}
+                }));
+              this.setState(prevState => ({
+                user: {...prevState.user.dislikes.filter(dislike => dislike !== movieId)}
+              }));
+            console.log(response);
+          })
+          .catch(error => {
+            const errorText = error.response.statusText;
+            this.setState({ error: errorText });
+            console.log(errorText);
+          })
+      };
 
 
   render() {
@@ -81,7 +128,12 @@ class Header extends Component {
         </nav>
         <Switch>
           <Route exact path='/' render={() => {
-            return <Home user={this.state.user} movies={this.state.movies} />
+            return <Home
+            user={this.state.user}
+            movies={this.state.movies}
+            setVote={this.setVote}
+            revoke={this.revoke}
+            />
           }} />
           <Route path='/signup' render={() => {
             return <SignUp setUser={this.setUser} />

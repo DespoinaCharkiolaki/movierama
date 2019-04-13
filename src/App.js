@@ -3,7 +3,7 @@ import { BrowserRouter, Redirect } from 'react-router-dom';
 import Header from './components/header/header.js';
 
 const App = () => (
-  <BrowserRouter basename="/movierama">
+  <BrowserRouter basename="/">
     <div>
       <Header />
     <Redirect to='/#' />

@@ -5,8 +5,7 @@ import 'moment-timezone';
 
 class Movie extends React.Component {
   render() {
-    const movie = this.props.movie;
-    const user = this.props.user;
+    const { movie, user, filterByUsername, setVote, revoke } = this.props;
     return (
       <div className="movie">
         <h1 className="h3 mb-3 font-weight-normal">
@@ -15,14 +14,26 @@ class Movie extends React.Component {
         <h6>Posted by
           {user && user.username === movie.username
             ?
-            <a href="#"> You </a>
+            <button
+                type="button"
+                className="btn btn-link p-0"
+                onClick={() => {filterByUsername(movie.username)}}
+            >
+                &nbsp;You&nbsp;
+            </button>
             :
-            <a href="#"> {movie.username} </a>
+            <button
+                type="button"
+                className="btn btn-link p-0"
+                onClick={() => {filterByUsername(movie.username)}}
+            >
+                &nbsp;{movie.username}&nbsp;
+            </button>
           }
           <Moment fromNow>{movie.date}</Moment>
         </h6>
         <p>{movie.description}</p>
-        <Vote user={user} movie={movie}/>
+        <Vote user={user} movie={movie} setVote={setVote} revoke={revoke}/>
       </div>
     );
   }

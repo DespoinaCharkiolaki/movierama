@@ -27,7 +27,7 @@ class Home extends Component {
     const queryParams = {
       sortingType: this.state.sortBy,
       username: this.state.publishedBy,
-      pageNumber: this.state.pageNumber
+      pageNumber: this.state.pageNumber,
     };
     console.log(queryParams);
 
@@ -57,6 +57,11 @@ class Home extends Component {
       () => this.getMovies());
   };
 
+  filterByUsername = (publishedBy) => {
+    this.setState({ publishedBy: publishedBy },
+      () => this.getMovies());
+  };
+
   loadMore = () => {
     this.setState({ pageNumber: this.state.pageNumber + 1 },
       () => this.getMovies());
@@ -64,20 +69,26 @@ class Home extends Component {
 
   render() {
     const { movies, isLoaded, error, lastPageNumber, pageNumber} = this.state;
-    const { user } = this.props;
+    const { user, setVote, revoke } = this.props;
     return (
       <div className="row justify-content-start">
         <div className="col-lg-3 col-md-12">
           <Sidebar setSorting={this.setSorting} />
         </div>
-        <div className="col-lg-6 col-md-12">
+        <div className="col-lg-7 col-md-12">
           {!isLoaded ?
             <Loader label="Loading..."/>
             : error ?
               <Alert error={error} />
               :
               <React.Fragment>
-                <MovieList user={user ? user : null} movies={movies} />
+                <MovieList
+                    user={user ? user : null}
+                    movies={movies}
+                    filterByUsername={this.filterByUsername}
+                    setVote={setVote}
+                    revoke={revoke}
+                 />
                   {!(lastPageNumber === (pageNumber + 1)) ?
                   <div className="row">
                     <div className="col-12">
