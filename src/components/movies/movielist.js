@@ -1,54 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Movie from './movie';
-import Alert from '../alert';
-import Loader from '../loader';
-import { getMoviesApi } from '../../constants';
 
-class MovieList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      movies: []
-    };
-  }
-
-  componentDidMount() {
-    fetch(getMoviesApi)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            movies: result.movies
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-  }
+class MovieList extends Component {
 
   render() {
-    const { error, isLoaded, movies } = this.state;
+    const {user, movies} = this.props;
     return (
-      !isLoaded ?
-        <Loader />
-        : error ?
-          <Alert error={this.state.error} />
-          : movies ?
-            <React.Fragment>
-              {movies.map(movie => (
-                <span key={movie.id}>
-                  <Movie movie={movie} />
+      movies ?
+        <React.Fragment>
+          {movies.map(movie => (
+            <span key={movie.id}>
+                  <Movie
+                    user={user ? user : null}
+                    movie={movie}
+                  />
                 </span>
-              ))}
-            </React.Fragment>
-            : null
+          ))}
+        </React.Fragment>
+        : null
     )
   }
 }

@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 import UserForm from '../../components/userForm'
-import { loginApi } from '../../constants';
+import {loginApi} from '../../api/api';
+import axios from 'axios';
+import {Redirect} from "react-router-dom";
 
-class LogIn extends React.Component {
+class LogIn extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loginSuccessful: false,
+      error: null
+    };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -13,32 +19,25 @@ class LogIn extends React.Component {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch(loginApi, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify(
-        {
-          username: data.get('username'),
-          password: data.get('password')
-        }),
-    }).then(res => res.json())
-      .then(j => {
-          console.log(j)
-        },
-        (error) => {
-          this.setState({
-            hasError: true,
-            error
-          });
-        })
-      .catch();
+    axios
+      .post(loginApi, {username: data.get('username'), password: data.get('password')})
+      .then(response => {
+        this.props.setUser(response.data);
+        this.setState({error: null, loginSuccessful: true});
+        console.log("success", response);
+      })
+      .catch(error => {
+        this.setState({error: error.response.statusText});
+        console.log("error", error.response.statusText);
+      });
   }
 
   render() {
     return (
-      <UserForm title="Log In" button="Log In" />
+      <React.Fragment>
+        <UserForm title="Login" button="Login" action={this.handleSubmit} error={this.state.error}/>
+        {this.state.loginSuccessful && <Redirect to='/'/>}
+      </React.Fragment>
     );
   }
 }

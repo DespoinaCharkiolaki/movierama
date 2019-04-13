@@ -5,10 +5,10 @@ class Alert extends React.Component {
         const error = this.props.error;
         return (
             <div 
-                class="alert alert-danger mt-4" 
+                className="alert alert-danger mt-4"
                 role="alert"
             >
-                {error.message}
+                {error}
             </div>
         );
     }

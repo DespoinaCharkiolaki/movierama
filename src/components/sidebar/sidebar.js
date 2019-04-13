@@ -9,19 +9,13 @@ class Sidebar extends React.Component {
                     <div className="form-inline">
                         <select 
                             className="browser-default custom-select col-12"
-                            onChange={this.props.onInputChange}
+                            defaultValue="DATE"
+                            onChange={(e) => this.props.setSorting(e.target.value)}
                         >
-                            <option selected>Select</option>
-                            <option value="1">Like</option>
-                            <option value="2">Dislike</option>
-                            <option value="3">Date</option>
+                            <option value="LIKES">Like</option>
+                            <option value="DISLIKES">Dislike</option>
+                            <option value="DATE">Date</option>
                         </select>
-                        <button 
-                            onClick={this.props.onSearch} 
-                            className="btn btn-primary col-12 mt-2"
-                        >
-                            Sort
-                        </button>
                     </div>
                 </div>
             </div>
