@@ -9,7 +9,7 @@ class NewMovie extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginSuccessful: false,
+      submitSuccessful: false,
       error: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +35,7 @@ class NewMovie extends React.Component {
         this.props.setMovie(response.data);
         this.setState({
             error: null,
-            loginSuccessful: true
+            submitSuccessful: true
         });
         console.log("success", response);
       })
@@ -76,7 +76,7 @@ class NewMovie extends React.Component {
               </form>
             </div>
           </div>
-          {this.state.loginSuccessful && <Redirect to='/'/>}
+          {this.state.submitSuccessful && <Redirect to='/'/>}
        </React.Fragment>
     );
   }

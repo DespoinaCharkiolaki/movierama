@@ -34,9 +34,15 @@ class Home extends Component {
     axios
       .get(getMoviesApi, { params: queryParams })
       .then(response => {
+        let movies;
+        if (this.state.pageNumber === 0) {
+          movies = response.data.movies;
+        } else {
+          movies = this.state.movies.concat(response.data.movies);
+        }
         this.setState({
           isLoaded: true,
-          movies: response.data.movies,
+          movies: movies,
           lastPageNumber: response.data.numberOfPages,
         });
         console.log(response);
@@ -53,12 +59,12 @@ class Home extends Component {
   }
 
   setSorting = (sortBy) => {
-    this.setState({ sortBy: sortBy },
+    this.setState({ sortBy: sortBy, pageNumber: 0, publishedBy: null },
       () => this.getMovies());
   };
 
-  filterByUsername = (publishedBy) => {
-    this.setState({ publishedBy: publishedBy },
+  filterByUsername = (username) => {
+    this.setState({ publishedBy: username, pageNumber: 0 },
       () => this.getMovies());
   };
 

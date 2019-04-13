@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import React, {Component} from 'react';
+import {NavLink, Route, Switch} from 'react-router-dom';
 import axios from 'axios';
 import Home from '../../pages/home/home.js';
 import SignUp from '../../pages/signup/signup';
 import LogIn from '../../pages/login/login';
 import NewMovie from '../movies/newmovie';
-import { logoutApi } from "../../api/api";
+import {logoutApi} from "../../api/api";
 
 class Header extends Component {
   constructor(props) {
@@ -18,19 +18,19 @@ class Header extends Component {
   };
 
   setUser = (user) => {
-    this.setState({ user: user })
+    this.setState({user: user})
   };
 
   setMovie = (movie) => {
     const prevMovies = this.state.movies;
-    this.setState({ movies: { ...prevMovies, movie } })
+    this.setState({movies: {...prevMovies, movie}})
   };
 
   handleLogout = () => {
     axios
-      .post(logoutApi, {}, { headers: { 'Authorization': this.state.user.token } })
+      .post(logoutApi, {}, {headers: {'Authorization': this.state.user.token}})
       .then(response => {
-        this.setState({ user: null });
+        this.setState({user: null});
         console.log("success", response);
       })
       .catch(error => {
@@ -39,51 +39,63 @@ class Header extends Component {
   };
 
   setVote = (vote, movieId) => {
-      axios
-        .post(`/api/movies/${movieId}/vote`,
-          { voteType: vote },
-          { headers: { 'Authorization': this.state.user.token } }
-        )
-        .then(response => {
-          if (vote === 'UPVOTE'){
+    axios
+      .post(`/api/movies/${movieId}/vote`,
+        {voteType: vote},
+        {headers: {'Authorization': this.state.user.token}}
+      )
+      .then(response => {
+        const user = this.state.user;
+        if (vote === 'UPVOTE') {
+          const likes = user.likes.concat(movieId);
+          const movies = this.state.movies.map((movie) => {
+            if (movie.id === movieId) {
+              movie.likes++;
+            }
+          });
           this.setState(prevState => ({
-             user: {...prevState.user.likes, movieId}
-           }));
-           }else {
-            this.setState(prevState => ({
-               user: {...prevState.user.dislikes, movieId}
-             }));
-           }
-          console.log(response);
-        })
-        .catch(error => {
-          const errorText = error.response.statusText;
-          this.setState({ error: errorText });
-          console.log(errorText);
-        })
-    };
+            user: {...prevState.user, likes},
+            movies: movies
+          }));
+        } else {
+          const dislikes = user.dislikes.concat(movieId);
+          this.setState(prevState => ({
+            user: {...prevState.user, dislikes}
+          }));
+        }
+        console.log(response);
+      })
+      .catch(error => {
+        const errorText = error.response.statusText;
+        this.setState({error: errorText});
+        console.log(error.response);
+      })
+  };
 
-      revoke = (movieId) => {
-        axios
-          .post(`/api/movies/${movieId}/revoke`,
-            {},
-            { headers: { 'Authorization': this.state.user.token } }
-          )
-          .then(response => {
-                this.setState(prevState => ({
-                  user: {...prevState.user.likes.filter(like => like !== movieId)}
-                }));
-              this.setState(prevState => ({
-                user: {...prevState.user.dislikes.filter(dislike => dislike !== movieId)}
-              }));
-            console.log(response);
-          })
-          .catch(error => {
-            const errorText = error.response.statusText;
-            this.setState({ error: errorText });
-            console.log(errorText);
-          })
-      };
+  revoke = (movieId) => {
+    axios
+      .post(`/api/movies/${movieId}/revoke`,
+        {},
+        {headers: {'Authorization': this.state.user.token}}
+      )
+      .then(response => {
+        const user = this.state.user;
+        const likes = user.likes.filter(like => like !== movieId);
+        this.setState(prevState => ({
+          user: {...prevState.user, likes}
+        }));
+        const dislikes = user.dislikes.filter(dislike => dislike !== movieId);
+        this.setState(prevState => ({
+          user: {...prevState.user, dislikes}
+        }));
+        console.log(response);
+      })
+      .catch(error => {
+        const errorText = error.response.statusText;
+        this.setState({error: errorText});
+        console.log(errorText);
+      })
+  };
 
 
   render() {
@@ -129,21 +141,21 @@ class Header extends Component {
         <Switch>
           <Route exact path='/' render={() => {
             return <Home
-            user={this.state.user}
-            movies={this.state.movies}
-            setVote={this.setVote}
-            revoke={this.revoke}
+              user={this.state.user}
+              movies={this.state.movies}
+              setVote={this.setVote}
+              revoke={this.revoke}
             />
-          }} />
+          }}/>
           <Route path='/signup' render={() => {
-            return <SignUp setUser={this.setUser} />
-          }} />
+            return <SignUp setUser={this.setUser}/>
+          }}/>
           <Route path='/login' render={() => {
-            return <LogIn setUser={this.setUser} />
-          }} />
+            return <LogIn setUser={this.setUser}/>
+          }}/>
           <Route path='/newmovie' render={() => {
-            return <NewMovie user={this.state.user} setMovie={this.setMovie} />
-          }} />
+            return <NewMovie user={this.state.user} setMovie={this.setMovie}/>
+          }}/>
         </Switch>
       </div>
     );

@@ -2,12 +2,12 @@ import React from 'react';
 
 class Vote extends React.Component {
 
-  dislikeMovie = (movie, user) => {
-    return this.props.user.dislikes.includes(movie.id);
+  hasDislikedMovie = (movie, user) => {
+    return user.dislikes.includes(movie.id);
   };
 
-  likeMovie = (movie, user) => {
-    return this.props.user.likes.includes(movie.id);
+  hasLikedMovie = (movie, user) => {
+    return user.likes.includes(movie.id);
   };
 
   render() {
@@ -35,10 +35,10 @@ class Vote extends React.Component {
                 <h6>{movie.likes} Likes | {movie.dislikes} Dislikes</h6>
               </div>
             }
-            {this.dislikeMovie(movie, user) || this.likeMovie(movie, user)
+            {this.hasDislikedMovie(movie, user) || this.hasLikedMovie(movie, user)
             ?
             <div className="col-6 text-right">
-              <h6>You have vote this movie</h6>
+              <h6>You have <strong>{this.hasLikedMovie(movie, user)? "Liked" : "Disliked"}</strong> this movie</h6>
               <button
                 type="button"
                 className="btn btn-link p-0"
