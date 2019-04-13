@@ -35,3 +35,6 @@ body {
 .new-movie {
   padding: 40px!important;
 }
+.navbar-username{
+  padding: 15px 5px;
+}

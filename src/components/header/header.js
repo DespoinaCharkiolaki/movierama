@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {Route, NavLink, Switch} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, NavLink, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Home from '../../pages/home/home.js';
 import SignUp from '../../pages/signup/signup';
 import LogIn from '../../pages/login/login';
 import NewMovie from '../movies/newmovie';
-import {logoutApi} from "../../api/api";
+import { logoutApi } from "../../api/api";
 
 class Header extends Component {
 
@@ -18,19 +18,19 @@ class Header extends Component {
   };
 
   setUser = (user) => {
-    this.setState({user: user})
+    this.setState({ user: user })
   };
 
   setMovie = (movie) => {
     const prevMovies = this.state.movies;
-    this.setState({movies: {...prevMovies, movie}})
+    this.setState({ movies: { ...prevMovies, movie } })
   };
 
   handleLogout = () => {
     axios
-      .post(logoutApi, {}, {headers:{'Authorization': this.state.user.token}})
+      .post(logoutApi, {}, { headers: { 'Authorization': this.state.user.token } })
       .then(response => {
-        this.setState({user: null});
+        this.setState({ user: null });
         console.log("success", response);
       })
       .catch(error => {
@@ -46,8 +46,10 @@ class Header extends Component {
           <NavLink className="navbar-brand justify-content-start" to="/">Movierama</NavLink>
           {this.state.user ?
             <div className="navbar-collapse justify-content-end">
+              <span className="navbar-username">
+                <h5>Welcome back {this.state.user.username}!</h5>
+              </span>
               <ul className="navbar-nav">
-                <li className="nav-item">{this.state.user.username}</li>
                 <li className="nav-item">
                   <NavLink to='' className="nav-link">
                     <button className="btn btn-primary" type="button" onClick={this.handleLogout}>Log Out</button>
@@ -79,17 +81,17 @@ class Header extends Component {
         </nav>
         <Switch>
           <Route exact path='/' render={() => {
-            return <Home user={this.state.user} movies={this.state.movies}/>
-          }}/>
+            return <Home user={this.state.user} movies={this.state.movies} />
+          }} />
           <Route path='/signup' render={() => {
-            return <SignUp setUser={this.setUser}/>
-          }}/>
+            return <SignUp setUser={this.setUser} />
+          }} />
           <Route path='/login' render={() => {
-            return <LogIn setUser={this.setUser}/>
-          }}/>
+            return <LogIn setUser={this.setUser} />
+          }} />
           <Route path='/newmovie' render={() => {
-            return <NewMovie user={this.state.user} setMovie={this.setMovie}/>
-          }}/>
+            return <NewMovie user={this.state.user} setMovie={this.setMovie} />
+          }} />
         </Switch>
       </div>
     );

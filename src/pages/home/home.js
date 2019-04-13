@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Sidebar from '../../components/sidebar/sidebar'
 import MovieList from '../../components/movies/movielist';
-import {getMoviesApi} from '../../api/api';
+import { getMoviesApi } from '../../api/api';
 import Loader from '../../components/loader';
 import Alert from '../../components/alert';
 import axios from 'axios';
@@ -16,7 +16,8 @@ class Home extends Component {
       publishedBy: null,
       pageNumber: 0,
       isLoaded: false,
-      error: null
+      error: null,
+      lastPageNumber: null
     };
   }
 
@@ -31,17 +32,18 @@ class Home extends Component {
     console.log(queryParams);
 
     axios
-      .get(getMoviesApi, {params: queryParams})
+      .get(getMoviesApi, { params: queryParams })
       .then(response => {
         this.setState({
           isLoaded: true,
-          movies: response.data.movies
+          movies: response.data.movies,
+          lastPageNumber: response.data.numberOfPages,
         });
         console.log(response);
       })
       .catch(error => {
         const errorText = error.response.statusText;
-        this.setState({error: errorText});
+        this.setState({ error: errorText });
         console.log(errorText);
       })
   }
@@ -51,35 +53,42 @@ class Home extends Component {
   }
 
   setSorting = (sortBy) => {
-    this.setState({sortBy: sortBy},
+    this.setState({ sortBy: sortBy },
       () => this.getMovies());
   };
 
   loadMore = () => {
-    this.setState({pageNumber: this.state.pageNumber + 1},
+    this.setState({ pageNumber: this.state.pageNumber + 1 },
       () => this.getMovies());
   };
 
   render() {
-    const {movies, isLoaded, error} = this.state;
-    const {user} = this.props;
+    const { movies, isLoaded, error, lastPageNumber, pageNumber} = this.state;
+    const { user } = this.props;
     return (
       <div className="row justify-content-start">
         <div className="col-lg-3 col-md-12">
-          <Sidebar setSorting={this.setSorting}/>
+          <Sidebar setSorting={this.setSorting} />
         </div>
         <div className="col-lg-6 col-md-12">
           {!isLoaded ?
-            <Loader/>
+            <Loader label="Loading..."/>
             : error ?
-              <Alert error={error}/>
+              <Alert error={error} />
               :
-              <MovieList user={user ? user : null} movies={movies}/>
+              <React.Fragment>
+                <MovieList user={user ? user : null} movies={movies} />
+                  {!(lastPageNumber === (pageNumber + 1)) ?
+                  <div className="row">
+                    <div className="col-12">
+                      <button className="btn btn-primary m-4" type="button" onClick={this.loadMore}>
+                        Load More
+                      </button>
+                    </div>
+                  </div> : null
+                  }
+              </React.Fragment>
           }
-          <button
-            className="btn btn-primary mt-4" type="button" onClick={this.loadMore}>
-            Load More
-          </button>
         </div>
       </div>
     );

@@ -5,7 +5,6 @@ class UserForm extends React.Component {
   render() {
     const title = this.props.title;
     const button = this.props.button;
-    const error = this.props.error;
     return (
       <div className="row justify-content-center">
         <div className="col-4 sign-up">
@@ -30,9 +29,6 @@ class UserForm extends React.Component {
               />
               <button className="btn btn-lg btn-primary btn-block mt-2" type="submit">{button}</button>
             </form>
-            {error &&
-            <Alert error={error}/>
-            }
           </div>
         </div>
       </div>

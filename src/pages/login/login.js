@@ -3,6 +3,7 @@ import UserForm from '../../components/userForm'
 import {loginApi} from '../../api/api';
 import axios from 'axios';
 import {Redirect} from "react-router-dom";
+import Alert from '../../components/alert'
 
 class LogIn extends Component {
 
@@ -33,8 +34,10 @@ class LogIn extends Component {
   }
 
   render() {
+    const error = this.state.error;
     return (
       <React.Fragment>
+        {error && <Alert error={error} />}
         <UserForm title="Login" button="Login" action={this.handleSubmit} error={this.state.error}/>
         {this.state.loginSuccessful && <Redirect to='/'/>}
       </React.Fragment>

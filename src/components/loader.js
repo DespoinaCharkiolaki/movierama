@@ -2,20 +2,13 @@ import React from 'react';
 
 class Loader extends React.Component {
     render() {
-        const label = 'Loading...';
+        const label = this.props.label;
         return (
-            <button
-                class="btn btn-primary mt-4"
-                type="button"
-                disabled
-            >
-                <span 
-                    class="spinner-border spinner-border-sm" 
-                    role="status" 
-                    aria-hidden="true" 
-                />
-                {label}
-            </button>
+            <div className="row justify-content-center">
+                <div className="col-10 alert alert-info mt-4" role="alert">
+                    {label}
+                </div>
+            </div>
         );
     }
 }
