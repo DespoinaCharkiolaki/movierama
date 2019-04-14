@@ -12,21 +12,22 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "4.0.0-alpha.6",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.23",
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1",
     "react-moment": "^0.8.4",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^1.1.5",
     "react-redux": "6.0.0",
-    "redux": "4.0.1"
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^1.1.5",
+    "redux": "4.0.1",
+    "serve": "^11.0.0"
   },
   "proxy": "https://workable-movie-rama.herokuapp.com",
   "devDependencies": {
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
     "eslint": "^5.16.0",
     "json-server": "^0.14.2"
   },

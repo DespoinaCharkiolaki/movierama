@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Redirect } from 'react-router-dom';
-import Header from './components/header/header.js';
+import Main from './components/header/main.js';
 
 const App = () => (
   <BrowserRouter basename="/">
     <div>
-      <Header />
-    <Redirect to='/#' />
+      <Main />
+    <Redirect to='/' />
     </div>
   </BrowserRouter>
 );

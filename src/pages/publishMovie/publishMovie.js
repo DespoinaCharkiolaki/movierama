@@ -2,9 +2,9 @@ import React from 'react';
 import {addMovieApi} from '../../api/api';
 import axios from "axios";
 import {Redirect} from "react-router-dom";
-import Alert from '..//alert';
+import Alert from '../../components/alert';
 
-class NewMovie extends React.Component {
+class PublishMovie extends React.Component {
 
   constructor(props) {
     super(props);
@@ -82,4 +82,4 @@ class NewMovie extends React.Component {
   }
 }
 
-export default NewMovie;
+export default PublishMovie;
